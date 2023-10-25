@@ -1,35 +1,32 @@
 #!/usr/bin/python3
-"""
-a script that starts a Flask web application
-"""
+""" Starts a Flask web application listeniing on 0.0.0.0:5000"""
+
+
 from flask import Flask
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
-@app.route('/', strict_slashes=False)
-def hello():
-        """ A function that display Hello HBNB """
-        return "Hello HBNB!"
+@app.route('/')
+def index():
+        return 'Hello HBNB!'
 
 
-@app.route('/hbnb', strict_slashes=False)
-def hbnb():
-    """" A function that display HBNB """
-    return "HBNB"
+    @app.route('/hbnb')
+    def hbnb():
+            return 'HBNB'
 
 
-@app.route('/c/<text>', strict_slashes=False)
-def c_text(text):
-    """ a function that recieves a keyword argument and display a message """
-    return 'C %s' % text.replace('_', ' ')
+        @app.route('/c/<text>')
+        def get_c_text(text):
+                return "C " + str(text.replace("_", " "))
 
 
-@app.route('/python/', defaults={'text': "is_cool"})
-@app.route('/python/<text>', strict_slashes=False)
-def python_text(text):
-    """ A function that recives a keyword argument and display a message """
-    return 'python %s' % text.replace('_', ' ')
+            @app.route('/python', defaults={"text": "is cool"})
+            @app.route('/python/<text>')
+            def python_text(text):
+                    return "Python " + str(text.replace("_", " "))
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+                if __name__ == "__main__":
+                        app.run(host="0.0.0.0")
