@@ -12,21 +12,21 @@ def index():
         return 'Hello HBNB!'
 
 
-    @app.route('/hbnb')
-    def hbnb():
-            return 'HBNB'
+@app.route('/hbnb')
+def hbnb():
+    return 'HBNB'
 
 
-        @app.route('/c/<text>')
-        def get_c_text(text):
-                return "C " + str(text.replace("_", " "))
+@app.route('/c/<text>')
+def get_c_text(text):
+    return "C " + str(text.replace("_", " "))
 
 
-            @app.route('/python', defaults={"text": "is cool"})
-            @app.route('/python/<text>')
-            def python_text(text):
-                    return "Python " + str(text.replace("_", " "))
+@app.route('/python', defaults={"text": "is cool"})
+@app.route('/python/<text>')
+def python_text(text):
+    return "Python " + str(text.replace("_", " "))
 
 
-                if __name__ == "__main__":
-                        app.run(host="0.0.0.0")
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
