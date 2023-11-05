@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 """ module doc
 """
-from fabric.api import task, local, env, put, run
+from fabric.api import task, local, env, put, run, runs_once
 from datetime import datetime
 import os
 
 env.hosts = ['18.207.1.87', '52.206.189.175']
 
 
-@task
+@runs_once
 def do_pack():
     """ method doc
         sudo fab -f 1-pack_web_static.py do_pack
@@ -48,3 +48,35 @@ def do_deploy(archive_path):
         return True
     except Exception:
         return False
+
+
+@task
+def deploy():
+    """ method doc
+        sudo fab -f 1-pack_web_static.py do_pack
+    """
+    path = do_pack()
+    if path is None:
+        return False
+    return do_deploy(path)
+
+
+@runs_once
+def remove_local(number):
+    """ method doc
+        sudo fab -f 1-pack_web_static.py do_pack
+    """
+    local("ls -dt versions/* | tail -n +{} | sudo xargs rm -fr".format(number))
+
+
+@task
+def do_clean(number=0):
+    """ method doc
+        sudo fab -f 1-pack_web_static.py do_pack
+    """
+    if int(number) == 0:
+        number = 1
+    number = int(number) + 1
+    remove_local(number)
+    rem_path = "/data/web_static/releases/*"
+    run("ls -dt {} | tail -n +{} | sudo xargs rm -fr".format(rem_path, number))
